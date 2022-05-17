@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-
 import '../NetworkHandler.dart';
 import 'package:http/http.dart';
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key}) : super(key: key);
@@ -20,6 +22,9 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  TextEditingController _firstnameController = TextEditingController();
+  TextEditingController _lastnameController = TextEditingController();
+
   String errorText;
   bool validate = false;
   bool circular = false;
@@ -55,6 +60,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 20,
               ),
               usernameTextField(),
+              firstNameTextfromfield(),
+              lastnameTextFormField(),
               emailTextField(),
               passwordTextField(),
               SizedBox(
@@ -66,13 +73,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   setState(() {
                     circular = true;
                   }); 
-                  await checkUser();
-                  if (_globalkey.currentState.validate() && validate ) {
+                  //await checkUser();
+                 // if (_globalkey.currentState.validate() && validate ) {
                     //sending the data to rest server
                     Map<String, String> data = {
                       "username": _usernameController.text,
                       "email": _emailController.text,
                       "password": _passwordController.text,
+                      "lastName":_lastnameController.text,
+                      "firstName":_firstnameController.text
                     };
                     print(data);
                     var responseRegister =
@@ -89,7 +98,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     //     "password": _passwordController.text,
                     //   };
                     //   var response =
-                    //       await networkHandler.post("/user/login", data);
+                    //       await networkHandler.post("/auth/login", data);
 
                     //   if (response.statusCode == 200 ||
                     //       response.statusCode == 201) {
@@ -121,11 +130,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     setState(() {
                       circular = false;
                     });
-                  } else {
-                    setState(() {
-                      circular = false;
-                    });
-                  }
+                  // } 
+                  // else {
+                  //   setState(() {
+                  //     circular = false;
+                  //   });
+                  // }
                 },
                 child: circular
                     ? CircularProgressIndicator()
@@ -184,26 +194,24 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget usernameTextField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10.0),
-      child: Column(
-        children: [
-          Text("Username"),
-          TextFormField(
-            controller: _usernameController,
-            decoration: InputDecoration(
-              errorText: validate ? null : errorText,
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 2, 
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+    return customTextFormWIdgit(
+      title: "Username",
+      controller: _usernameController, validate: validate, errorText: errorText,);
+
+  }
+
+  Widget lastnameTextFormField(){
+return customTextFormWIdgit(
+      title: "Lastname",
+      controller: _lastnameController, validate: validate, errorText: errorText,);
+
+  }
+
+  Widget firstNameTextfromfield(){
+    return customTextFormWIdgit(
+      title: "Firstname",
+      controller: _firstnameController, validate: validate, errorText: errorText,);
+
   }
 
   Widget emailTextField() {
@@ -264,6 +272,44 @@ class _SignUpPageState extends State<SignUpPage> {
                 borderSide: BorderSide(
                   color: Colors.black,
                   width: 2,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class customTextFormWIdgit extends StatelessWidget {
+  const customTextFormWIdgit({
+    Key key,
+    @required this.controller,
+    @required this.validate,
+    @required this.errorText,
+    @required this.title
+  }): super(key: key);
+
+  final TextEditingController controller;
+  final bool validate;
+  final String errorText;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10.0),
+      child: Column(
+        children: [
+          Text(title),
+          TextFormField(
+            controller: controller,
+            decoration: InputDecoration(
+              errorText: validate ? null : errorText,
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: 2, 
                 ),
               ),
             ),

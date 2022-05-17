@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'SignUpPage.dart';
+import 'SininPage.dart';
 
 
 
@@ -132,9 +133,9 @@ class _WelcomePageState extends State<WelcomePage>
                     SizedBox(width: 10),
                     InkWell(
                       onTap: () {
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //   builder: (context) => SignInPage(),
-                        // ));
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SignInPage(),
+                        ));
                       },
                       child: Text(
                         "Sign In",
