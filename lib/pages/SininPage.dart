@@ -1,10 +1,8 @@
-import 'dart:html';
 
 import 'package:blogapp/pages/HomePage.dart';
 import 'package:blogapp/pages/SignUpPage.dart';
 import 'package:flutter/material.dart';
 import '../NetworkHandler.dart';
-import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
