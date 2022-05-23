@@ -1,3 +1,7 @@
+import 'dart:html';
+
+import 'package:blogapp/Screen/HomeScreen.dart';
+import 'package:blogapp/Screen/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -7,19 +11,59 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {  
+  int currentState=0;
+  List<Widget> widgets=[
+    HomeScreen(),
+    ProfileScreen( )
+  ];
+  List<String> titlestring=["Home Page","Profile Page"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(child: Column(
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text("@username"),
+              ],
+            ),
+            ),
+            ListTile(
+              title: Text("All Posts"),
+            ),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        backgroundColor: Colors.teal,
+        title: Text(titlestring[currentState]),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
+        ],
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.teal,
         onPressed: null,
         child: Text(
           "+",
-          style: TextStyle(fontSize: 30),
+          style: TextStyle(fontSize: 40),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.teal,
         shape: CircularNotchedRectangle(),
         notchMargin: 12,
         child: Container(
@@ -31,12 +75,22 @@ class _HomePageState extends State<HomePage> {
               children: [
                 IconButton(
                   icon: Icon(Icons.home),
-                  onPressed: null,
+                  color: currentState==0?Colors.white:Colors.white54,
+                  onPressed: (){
+                    setState(() {
+                      currentState=0;
+                    });
+                  },
                   iconSize: 35,
                 ),
                 IconButton(
                   icon: Icon(Icons.person),
-                  onPressed: null,
+                 color: currentState==1?Colors.white:Colors.white54,
+                  onPressed: (){
+                    setState(() {
+                      currentState=1;
+                    });
+                  },
                   iconSize: 35,
                 )
               ],
@@ -44,9 +98,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: Center(
-        child: Text("Welcome on blog app"),
-      ),
+      body: widgets[currentState]
     );
   }
 }

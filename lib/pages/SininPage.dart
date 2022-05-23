@@ -120,7 +120,8 @@ class _SignInPageState extends State<SignInPage> {
                       print(output["token"]);
                       //storing the token using flutter secure storage
                       //await used because it is IO related operation
-                     await storage.write(key: "token", value: output["token"]); 
+                      //this securestorage is not working for storing the tokens
+                    // await storage.write(key: "token", value: output["token"]); 
                       setState(() {
                         validate = true;
                         circular = false;
@@ -134,9 +135,11 @@ class _SignInPageState extends State<SignInPage> {
                         (route) => false);
                      
                     } else {
+                     // Map output = json.decode(response.body);
                       String output = json.decode(response.body);
                       setState(() {
                         validate = false;
+                      // errorText = output.toString();
                         errorText = output;
                         circular = false;
                       });

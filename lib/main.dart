@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void checkLogin() async {
+    //reading token as key value pair that was generated
     String token = await storage.read(key: "token");
     if (token != null) {
       setState(() {
